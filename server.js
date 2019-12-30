@@ -1,24 +1,31 @@
 const express = require('express')
 
+const db = require('./psql')
+class Cat extends db {}
+Cat.ensureTable()
+
 const app = express()
-// parse application/json
-app.use(require('body-parser').json())
+app.use(require('body-parser').json()) // parse application/json
 
-const cat = {
-	name: 'snowball',
-	age: 3,
-	birthDate: new Date().toISOString(),
-	likesYarn: true,
-	aptitude: 8.9,
-}
-
-app.get('/api/v1/cats', (req, res) => {
-	res.json(cat)
+app.get('/api/v1/cats', async (req, res) => {
+	try {
+		console.log('GET /api/v1/cats')
+		const cats = await Cat.all()
+		res.json({ cats })
+	} catch(e) {
+		res.status(500).json({ message: e.message })
+	}
 })
 
-app.post('/api/v1/cats', (req, res) => {
-	console.log(req.body, req.body.name)
-	res.send('cat saved successfully')
+app.post('/api/v1/cats', async (req, res) => {
+	try {
+		const cat = req.body
+		console.log('POST /api/v1/cats', cat)
+		await Cat.push(cat)
+		res.send('cat saved successfully')
+	} catch(e) {
+		res.status(500).json({ message: e.message })
+	}
 })
 
 const port = 8080
