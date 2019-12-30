@@ -1,7 +1,5 @@
 const express = require('express')
-
-const db = require('./psql')
-class Cat extends db {}
+const Cat = require('./Cat')
 Cat.ensureTable()
 
 const app = express()
@@ -21,7 +19,7 @@ app.post('/api/v1/cats', async (req, res) => {
 	try {
 		const cat = req.body
 		console.log('POST /api/v1/cats', cat)
-		await Cat.push(cat)
+		await Cat.insert(cat)
 		res.send('cat saved successfully')
 	} catch(e) {
 		res.status(500).json({ message: e.message })

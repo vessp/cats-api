@@ -99,11 +99,12 @@ module.exports = class JTable {
   static async ensureTable() {
     try {
       await this.setup()
-      const q = `CREATE TABLE ${this.tableName}`
-        + `(`
-        + `_id SERIAL UNIQUE,`
-        + `jdata jsonb `
-        + `)`
+      const q = this.createTableQuery || 
+        `CREATE TABLE ${this.tableName}`
+          + `(`
+          + `_id SERIAL UNIQUE,`
+          + `jdata jsonb `
+          + `)`
       const res = await this.pool.query(q)
       logi('(ensureTable):', this.tableName)
       return res.rows

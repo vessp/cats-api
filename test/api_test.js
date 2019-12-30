@@ -4,8 +4,8 @@ const axios = require('axios')
 const CAT = {
 	name: 'snowball',
 	age: 3,
-	birthDate: new Date().toISOString(),
-	likesYarn: true,
+	birth_date: new Date().toISOString(),
+	likes_yarn: true,
 	aptitude: 8.9,
 }
 
