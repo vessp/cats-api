@@ -1,3 +1,9 @@
+/*
+  This is a superclass I have been writing and using for the past few
+  years which helps with connecting and using PostgreSQL databases.
+  Most of this code is unused, I just included it to show my process.
+*/
+
 const { Client, Pool } = require('pg')
 
 if(process.env.NODE_ENV == 'development') {
@@ -49,9 +55,8 @@ module.exports = class JTable {
   }
 
   static async createDatabase(database) {
-    console.log(this.config)
     try {
-      const client = new Client(this.config)
+      const client = new Client(this.rootConfig)
       await client.connect()
       const q = `CREATE DATABASE ${database};`
       const res = await client.query(q)
@@ -60,8 +65,13 @@ module.exports = class JTable {
       return res.rows
     }
     catch (err) {
-      loge(err)
-      throw err
+      if(err.code == CODE_DB_EXISTS) {
+        logi(`database '${database}' exists`)
+      }
+      else{
+        loge(err)
+        throw err
+      }
     }
   }
 

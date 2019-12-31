@@ -22,6 +22,7 @@ class Cat extends db {
       + `);`
   }
 
+  // Get All Cats
   static async all() {
     try {
       await this.setup()
@@ -36,6 +37,7 @@ class Cat extends db {
     }
   }
 
+  // Insert New Cat
   static async insert(cat) {
     try {
       await this.setup()

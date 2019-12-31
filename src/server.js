@@ -1,10 +1,14 @@
 const express = require('express')
 const Cat = require('./Cat')
+
+// Initialize DB
+Cat.createDatabase('cats')
 Cat.ensureTable()
 
 const app = express()
 app.use(require('body-parser').json()) // parse application/json
 
+// Get All Cats Endpoint
 app.get('/api/v1/cats', async (req, res) => {
 	try {
 		console.log('GET /api/v1/cats')
@@ -15,6 +19,7 @@ app.get('/api/v1/cats', async (req, res) => {
 	}
 })
 
+// Insert Cat Endpoint
 app.post('/api/v1/cats', async (req, res) => {
 	try {
 		const cat = req.body
@@ -28,5 +33,5 @@ app.post('/api/v1/cats', async (req, res) => {
 
 const port = 8080
 app.listen(port, () => {
-	console.log(`Cats API listening on port ${port}!`)
+	console.log(`Cats API listening on port ${port}! Navigate to http://localhost:8080/api/v1/cats`)
 })
